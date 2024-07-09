@@ -1,0 +1,259 @@
+@startuml
+set namespaceSeparator ::
+
+class "savvy_expense_tracker_app::controllers::add_amount_controller.dart::AddAmountController" {
+  -dynamic _localPath
+  -dynamic _file()
+  +dynamic fetchAmounts()
+  +dynamic addAmount()
+  +dynamic updateAmount()
+  +dynamic deleteAmount()
+  -dynamic _getFile()
+  -dynamic _fetchAmounts()
+  +dynamic getAggregatedData()
+  +dynamic getAllAggregatedData()
+}
+
+class "savvy_expense_tracker_app::controllers::auth_controller.dart::AuthController" {
+  -dynamic _loadUsers()
+  +dynamic login()
+}
+
+class "savvy_expense_tracker_app::controllers::profile_controller.dart::ProfileController" {
+  +ProfileModel profile
+  +void logout()
+}
+
+"savvy_expense_tracker_app::controllers::profile_controller.dart::ProfileController" o-- "savvy_expense_tracker_app::models::profile_model.dart::ProfileModel"
+
+class "savvy_expense_tracker_app::main.dart::MyApp" {
+  +State<MyApp> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::main.dart::MyApp"
+
+class "savvy_expense_tracker_app::main.dart::_MyAppState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::main.dart::_MyAppState"
+
+class "savvy_expense_tracker_app::models::add_amount_model.dart::AddAmountModel" {
+  +int id
+  +String title
+  +double amount
+  +DateTime date
+  +Map<String, dynamic> toJson()
+}
+
+class "savvy_expense_tracker_app::models::profile_model.dart::ProfileModel" {
+  +String name
+  +String email
+  +String imageUrl
+}
+
+class "savvy_expense_tracker_app::models::user_model.dart::User" {
+  +String email
+  +String password
+  +Map<String, dynamic> toJson()
+  +String toString()
+}
+
+class "savvy_expense_tracker_app::views::add_amount_view.dart::AddAmountView" {
+  +AddAmountController controller
+  +dynamic Function(bool) onSaveComplete
+  +_AddAmountViewState createState()
+}
+
+"savvy_expense_tracker_app::views::add_amount_view.dart::AddAmountView" o-- "savvy_expense_tracker_app::controllers::add_amount_controller.dart::AddAmountController"
+"savvy_expense_tracker_app::views::add_amount_view.dart::AddAmountView" o-- "null::dynamic Function(bool)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::views::add_amount_view.dart::AddAmountView"
+
+class "savvy_expense_tracker_app::views::add_amount_view.dart::_AddAmountViewState" {
+  -TextEditingController _titleController
+  -TextEditingController _amountController
+  +String selectedOption
+  -Widget? _nextScreen
+  -void _onSavePressed()
+  -void _showAddAmountView()
+  -void _showSnackBarAfterAddingAmount()
+  -void _navigateToView()
+  +Widget build()
+  -Widget _buildOptionButton()
+}
+
+"savvy_expense_tracker_app::views::add_amount_view.dart::_AddAmountViewState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"savvy_expense_tracker_app::views::add_amount_view.dart::_AddAmountViewState" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::views::add_amount_view.dart::_AddAmountViewState"
+
+class "savvy_expense_tracker_app::views::dashboard_view.dart::DashboardView" {
+  +DashboardViewState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::views::dashboard_view.dart::DashboardView"
+
+class "savvy_expense_tracker_app::views::dashboard_view.dart::DashboardViewState" {
+  -AddAmountController _controller
+  -DateTime _startDate
+  -DateTime _endDate
+  +double totalIncome
+  +double totalExpense
+  +void initState()
+  -String _formatDateTime()
+  +void fetchData()
+  +void refreshData()
+  +Widget build()
+  -Widget _buildTotalAmountContainer()
+}
+
+"savvy_expense_tracker_app::views::dashboard_view.dart::DashboardViewState" o-- "savvy_expense_tracker_app::controllers::add_amount_controller.dart::AddAmountController"
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::views::dashboard_view.dart::DashboardViewState"
+
+class "savvy_expense_tracker_app::views::dashboard_view.dart::ExpenseAdder" {
+  {static} +void addExpense()
+}
+
+class "savvy_expense_tracker_app::views::dashboard_view.dart::SnackBarHandler" {
+  {static} +void showSnackBar()
+}
+
+class "savvy_expense_tracker_app::views::edit_profile_view.dart::EditProfileScreen" {
+  +_EditProfileScreenState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::views::edit_profile_view.dart::EditProfileScreen"
+
+class "savvy_expense_tracker_app::views::edit_profile_view.dart::_EditProfileScreenState" {
+  +DateTime? selectedDate
+  +String? selectedGender
+  -File? _image
+  +List<String> genderOptions
+  -dynamic _getImageFromGallery()
+  +Widget build()
+}
+
+"savvy_expense_tracker_app::views::edit_profile_view.dart::_EditProfileScreenState" o-- "dart::io::File"
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::views::edit_profile_view.dart::_EditProfileScreenState"
+
+class "savvy_expense_tracker_app::views::expense_view.dart::ExpenseView" {
+  +AddAmountController controller
+  +State<ExpenseView> createState()
+}
+
+"savvy_expense_tracker_app::views::expense_view.dart::ExpenseView" o-- "savvy_expense_tracker_app::controllers::add_amount_controller.dart::AddAmountController"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::views::expense_view.dart::ExpenseView"
+
+class "savvy_expense_tracker_app::views::expense_view.dart::_ExpenseViewState" {
+  +dynamic onAddExpensePressed
+  +Widget build()
+  -void _handleMenuSelection()
+  -void _showEditDialog()
+  -void _showDeleteDialog()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::views::expense_view.dart::_ExpenseViewState"
+
+class "savvy_expense_tracker_app::views::income_view.dart::IncomeView" {
+  +AddAmountController controller
+  +State<IncomeView> createState()
+}
+
+"savvy_expense_tracker_app::views::income_view.dart::IncomeView" o-- "savvy_expense_tracker_app::controllers::add_amount_controller.dart::AddAmountController"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::views::income_view.dart::IncomeView"
+
+class "savvy_expense_tracker_app::views::income_view.dart::_IncomeViewState" {
+  +dynamic onAddExpensePressed
+  +Widget build()
+  -void _handleMenuSelection()
+  -void _showEditDialog()
+  -void _showDeleteDialog()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::views::income_view.dart::_IncomeViewState"
+
+class "savvy_expense_tracker_app::views::login_view.dart::LoginView" {
+  +_LoginViewState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::views::login_view.dart::LoginView"
+
+class "savvy_expense_tracker_app::views::login_view.dart::_LoginViewState" {
+  -GlobalKey<FormState> _formKey
+  -AuthController _authController
+  -String _email
+  -String _password
+  -void _tryLogin()
+  +Widget build()
+}
+
+"savvy_expense_tracker_app::views::login_view.dart::_LoginViewState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"savvy_expense_tracker_app::views::login_view.dart::_LoginViewState" o-- "savvy_expense_tracker_app::controllers::auth_controller.dart::AuthController"
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::views::login_view.dart::_LoginViewState"
+
+class "savvy_expense_tracker_app::views::profile_view.dart::ProfileScreen" {
+  +State<ProfileScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::views::profile_view.dart::ProfileScreen"
+
+class "savvy_expense_tracker_app::views::profile_view.dart::_ProfileState" {
+  +ProfileController controller
+  +Widget build()
+}
+
+"savvy_expense_tracker_app::views::profile_view.dart::_ProfileState" o-- "savvy_expense_tracker_app::controllers::profile_controller.dart::ProfileController"
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::views::profile_view.dart::_ProfileState"
+
+class "savvy_expense_tracker_app::views::signup_view.dart::SignupView" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "savvy_expense_tracker_app::views::signup_view.dart::SignupView"
+
+class "savvy_expense_tracker_app::widgets::bar_chart_widget.dart::BarChartWidget" {
+  +Map<String, double> data
+  +bool isIncome
+  +State<BarChartWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::widgets::bar_chart_widget.dart::BarChartWidget"
+
+class "savvy_expense_tracker_app::widgets::bar_chart_widget.dart::_BarChartWidgetState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::widgets::bar_chart_widget.dart::_BarChartWidgetState"
+
+class "savvy_expense_tracker_app::widgets::combination_bar_chart_widget.dart::CombinationBarChartWidget" {
+  +double totalIncome
+  +double totalExpense
+  +double profit
+  +State<CombinationBarChartWidget> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::widgets::combination_bar_chart_widget.dart::CombinationBarChartWidget"
+
+class "savvy_expense_tracker_app::widgets::combination_bar_chart_widget.dart::_CombinationBarChartWidgetState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "savvy_expense_tracker_app::widgets::combination_bar_chart_widget.dart::_CombinationBarChartWidgetState"
+
+class "savvy_expense_tracker_app::widgets::horizontal_boxes.dart::HorizontalMagazine" {
+  +State<HorizontalMagazine> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "savvy_expense_tracker_app::widgets::horizontal_boxes.dart::HorizontalMagazine"
+
+class "savvy_expense_tracker_app::widgets::horizontal_boxes.dart::_HorizontalMagazineState" {
+  +List<String> boxLabels
+  +List<Color> boxColors
+  +Widget build()
+}
+"savvy_expense_tracker_app::widgets::list_in_pf_widget.dart::ListInPFWidget" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"savvy_expense_tracker_app::widgets::list_in_pf_widget.dart::ListInPFWidget" o-- "dart::ui::void Function()"
+"savvy_expense_tracker_app::widgets::list_in_pf_widget.dart::ListInPFWidget" o-- "dart::ui::Color"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "savvy_expense_tracker_app::widgets::list_in_pf_widget.dart::ListInPFWidget"
+
+
+@enduml
